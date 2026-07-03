@@ -1,0 +1,29 @@
+{
+  "name": "@no-middleman/cli",
+  "version": "0.0.1",
+  "description": "no-middleman CLI (alias nm): composite verifier runner for loop validation",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "no-middleman": "./dist/main.js",
+    "nm": "./dist/main.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@no-middleman/core": "workspace:*",
+    "@no-middleman/verifier-detox": "workspace:*",
+    "@no-middleman/verifiers": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}

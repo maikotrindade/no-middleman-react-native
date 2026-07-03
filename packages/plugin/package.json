@@ -1,0 +1,7 @@
+{
+  "name": "@no-middleman/plugin",
+  "version": "0.0.1",
+  "description": "Claude Code plugin for No Middleman: nm-fix skill, maker/checker agents, lineage hooks",
+  "license": "MIT",
+  "files": [".claude-plugin", "agents", "hooks", "skills"]
+}
