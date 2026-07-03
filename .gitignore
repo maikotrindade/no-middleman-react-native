@@ -3,3 +3,6 @@ dist/
 .turbo/
 *.log
 .nm/
+examples/reference-app/android/**/build/
+examples/reference-app/android/.gradle/
+examples/reference-app/android/local.properties

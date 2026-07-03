@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Reference App",
+    "slug": "reference-app",
+    "version": "0.0.1",
+    "platforms": ["android"],
+    "android": {
+      "package": "com.nomiddleman.referenceapp"
+    },
+    "plugins": ["@config-plugins/detox"]
+  }
+}
