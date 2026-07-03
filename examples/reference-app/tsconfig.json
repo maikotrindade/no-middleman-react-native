@@ -8,7 +8,13 @@
     "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "types": ["jest"]
+    "types": [
+      "jest"
+    ]
   },
-  "include": ["App.tsx", "src"]
+  "include": [
+    "App.tsx",
+    "src"
+  ],
+  "extends": "expo/tsconfig.base"
 }

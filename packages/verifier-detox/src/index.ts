@@ -10,6 +10,7 @@ export interface DetoxVerifierOptions {
   appDir?: string;
   configuration: string; // e.g. 'android.emu.debug'
   avdName: string;
+  bootTimeoutMs?: number;
   binaryPaths?: string[];
   buildCommand?: string;
   buildArgs?: string[];
@@ -38,7 +39,9 @@ export function detoxVerifier(options: DetoxVerifierOptions): Verifier {
       const metroPort = options.metroPort ?? 8081;
 
       const emulator =
-        options.manageEmulator === false ? undefined : await ensureEmulator({ avdName: options.avdName });
+        options.manageEmulator === false
+          ? undefined
+          : await ensureEmulator({ avdName: options.avdName, bootTimeoutMs: options.bootTimeoutMs });
       const metro =
         options.manageMetro === false ? undefined : await startMetro({ appDir, port: metroPort });
       try {

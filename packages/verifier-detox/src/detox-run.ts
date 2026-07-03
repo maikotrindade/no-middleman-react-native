@@ -122,6 +122,12 @@ export async function runDetoxSuite(options: DetoxRunOptions): Promise<DetoxSuit
   artifacts.push(first.outputFile);
   record(first.parsed);
 
+  // Zero flows means the suite never ran (setup crash, bad config). That is
+  // a broken oracle, not a green one — refuse to report anything.
+  if (votesPerFlow.size === 0) {
+    throw new Error(`detox ran zero flows — oracle is broken, not green; log: ${first.logPath}`);
+  }
+
   for (let run = 2; run <= maxRuns; run++) {
     const undecidedFiles = [
       ...new Set(

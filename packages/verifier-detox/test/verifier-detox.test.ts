@@ -186,6 +186,23 @@ describe('parseJestJson + majorityVote', () => {
   });
 });
 
+describe('runDetoxSuite', () => {
+  it('treats zero flows as a broken oracle, never green', async () => {
+    const { runDetoxSuite } = await import('../src/detox-run.js');
+    const appDir = mkdtempSync(join(tmpdir(), 'nm-detox-run-'));
+    const exec = async (): Promise<CommandOutcome> => {
+      // Simulate a setup crash: jest writes JSON but ran no tests.
+      const outputFile = join(appDir, '.nm/evidence/detox-run-1.json');
+      mkdirSync(join(appDir, '.nm/evidence'), { recursive: true });
+      writeFileSync(outputFile, JSON.stringify({ testResults: [] }));
+      return { code: 1, output: 'Test suite failed to run' };
+    };
+    await expect(
+      runDetoxSuite({ appDir, configuration: 'android.emu.debug', exec }),
+    ).rejects.toThrow(/zero flows/);
+  });
+});
+
 describe('ensureEmulator', () => {
   const adbResponse = (output: string): CommandOutcome => ({ code: 0, output });
 

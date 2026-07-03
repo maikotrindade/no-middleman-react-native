@@ -21,7 +21,7 @@ module.exports = {
   devices: {
     emulator: {
       type: 'android.emulator',
-      device: { avdName: 'Pixel_9_Pro_XL' },
+      device: { avdName: 'nm_test' },
       headless: true,
     },
   },

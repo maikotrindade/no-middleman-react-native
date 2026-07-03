@@ -53,7 +53,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // reuse a running emulator, else boot one headless and wait for full boot.
 export async function ensureEmulator(options: EmulatorOptions): Promise<EmulatorHandle> {
   const exec = options.exec ?? runCommand;
-  const bootTimeoutMs = options.bootTimeoutMs ?? 180_000;
+  const bootTimeoutMs = options.bootTimeoutMs ?? 300_000;
   const pollIntervalMs = options.pollIntervalMs ?? 3_000;
 
   const existing = await bootedSerials(exec);

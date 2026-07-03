@@ -24,7 +24,7 @@ const RN_IMPORT = "import { Button, StyleSheet, Text, TextInput, View } from 're
 
 const verifier = detoxVerifier({
   configuration: 'android.emu.debug',
-  avdName: process.env.NM_AVD ?? 'Pixel_9_Pro_XL',
+  avdName: process.env.NM_AVD ?? 'nm_test',
 });
 const ctx = { cwd: appDir, iteration: 0, spec: {} };
 
