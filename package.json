@@ -6,7 +6,8 @@
   "scripts": {
     "build": "turbo run build",
     "test": "turbo run test",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "prove:oracle": "node scripts/prove-oracle.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.0"
