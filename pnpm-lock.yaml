@@ -55,6 +55,38 @@ importers:
         specifier: ^8.19.0
         version: 8.62.1(eslint@9.39.4)(typescript@5.9.3)
 
+  packages/adapter-inngest:
+    dependencies:
+      '@no-middleman/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.17.0
+        version: 20.19.43
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.1.0
+        version: 3.2.6(@types/node@20.19.43)(lightningcss@1.27.0)(terser@5.48.0)
+
+  packages/adapter-supabase:
+    dependencies:
+      '@no-middleman/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.17.0
+        version: 20.19.43
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.1.0
+        version: 3.2.6(@types/node@20.19.43)(lightningcss@1.27.0)(terser@5.48.0)
+
   packages/cli:
     dependencies:
       '@no-middleman/core':

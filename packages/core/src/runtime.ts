@@ -31,6 +31,10 @@ export interface LoopRunnerOptions {
   cwd: string;
   worktree?: string;
   killSwitchPath?: string; // default <cwd>/.nm/KILL
+  // Optional mirror for every journal record (e.g. the Supabase adapter).
+  // Fire-and-forget: the JSONL file stays the source of truth for replay,
+  // and a failing sink never breaks the loop.
+  lineageSink?: (record: JournalRecord) => void | Promise<void>;
 }
 
 export interface LoopOutcome {
@@ -114,7 +118,7 @@ export class LoopRunner {
     this.actor.send(event);
     const snapshot = this.actor.getSnapshot();
     const state = String(snapshot.value);
-    appendRecord(this.journalPath, {
+    const record: JournalRecord = {
       ts: new Date().toISOString(),
       loopId: this.spec.id,
       iteration: snapshot.context.iteration,
@@ -124,7 +128,11 @@ export class LoopRunner {
       verifier: event.type === 'VERIFIED' ? event.result : undefined,
       diffHash: snapshot.context.lastDiffHash,
       worktree: this.options.worktree,
-    });
+    };
+    appendRecord(this.journalPath, record);
+    if (this.options.lineageSink) {
+      void Promise.resolve(this.options.lineageSink(record)).catch(() => {});
+    }
     writeWorkingState(this.workingStatePath, state, snapshot.context);
   }
 
