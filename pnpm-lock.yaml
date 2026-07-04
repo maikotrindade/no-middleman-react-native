@@ -95,6 +95,18 @@ importers:
 
   packages/plugin: {}
 
+  packages/reporter-resend:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.17.0
+        version: 20.19.43
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.1.0
+        version: 3.2.6(@types/node@20.19.43)(lightningcss@1.27.0)(terser@5.48.0)
+
   packages/verifier-detox:
     dependencies:
       '@no-middleman/core':

@@ -1,0 +1,23 @@
+{
+  "name": "@no-middleman/reporter-resend",
+  "version": "0.0.1",
+  "description": "Digest reporter for No Middleman loops: HTTP hook target that emails run summaries via Resend",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "nm-reporter": "./dist/main.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}
