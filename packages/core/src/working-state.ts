@@ -16,6 +16,11 @@ export function writeWorkingState(path: string, state: string, context: LoopMach
     `- Iteration: ${context.iteration} / ${context.spec.stopping.budget.maxIterations}`,
     `- Tokens spent: ${context.tokensSpent} / ${context.spec.stopping.budget.maxTokens}`,
     `- Wall clock: ${context.wallClockMs}ms / ${context.spec.stopping.budget.maxWallClockMs}ms`,
+    ...(context.spec.stopping.reserve
+      ? [
+          `- Escalation reserve: ${context.spec.stopping.reserve.tokens} tokens / ${context.spec.stopping.reserve.wallClockMs}ms (kept for handoff)`,
+        ]
+      : []),
     `- Last verification: ${
       context.lastResult ? (context.lastResult.passed ? 'green' : 'red') : 'not run yet'
     }`,

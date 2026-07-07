@@ -22,6 +22,7 @@ function makeSpec(): LoopSpec {
       intake: { goal: 'g', scope: { include: ['src/**'], exclude: [] } },
       verification: [greenVerifier()],
       stateModel: { workingState: '.nm/ws.md', lineage: '.nm/lineage.jsonl', adapter: 'file' },
+      context: { instructions: ['CLAUDE.md'], docs: [] },
       topology: 'maker-checker',
       operatingDomain: 'react-native',
     },

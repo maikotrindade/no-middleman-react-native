@@ -85,6 +85,24 @@ describe('LoopRunner', () => {
     expect(outcome.tokensSpent).toBe(120);
   });
 
+  it('stops iterating early to preserve the escalation reserve', async () => {
+    const cwd = tmpCwd();
+    const spec = makeSpec();
+    spec.taxonomy.verification = [seqVerifier([false])];
+    spec.stopping.budget.maxTokens = 100;
+    // Without the reserve this would iterate twice (60, 120); the 50-token
+    // reserve caps iteration at 50, so it stops after the first step with
+    // headroom still unspent for the handoff.
+    spec.stopping.reserve = { tokens: 50, wallClockMs: 0 };
+    const hooks = defaultHooks({ makerStep: () => ({ diffHash: 'd', tokensSpent: 60 }) });
+    const outcome = await new LoopRunner(spec, hooks, { cwd }).run();
+
+    expect(outcome.kind).toBe('budgetExceeded');
+    expect(outcome.iterations).toBe(1);
+    expect(outcome.tokensSpent).toBe(60);
+    expect(spec.stopping.budget.maxTokens - outcome.tokensSpent).toBeGreaterThanOrEqual(40);
+  });
+
   it('stops when maxWallClockMs is exhausted', async () => {
     const cwd = tmpCwd();
     const spec = makeSpec();

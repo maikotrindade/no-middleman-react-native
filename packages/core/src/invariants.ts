@@ -51,13 +51,30 @@ export function validateLoopSpec(spec: LoopSpec): InvariantViolation[] {
     });
   }
 
-  const { budget } = spec.stopping;
+  const { budget, reserve } = spec.stopping;
   for (const key of ['maxIterations', 'maxTokens', 'maxWallClockMs'] as const) {
     const value = budget[key];
     if (!Number.isFinite(value) || value <= 0) {
       violations.push({
         invariant: 'bounded-retries',
         message: `budget.${key} must be a positive finite number`,
+      });
+    }
+  }
+
+  // An escalation reserve may not swallow the whole budget: leaving no room to
+  // iterate is as broken as leaving no room to hand off.
+  if (reserve) {
+    if (reserve.tokens < 0 || reserve.tokens >= budget.maxTokens) {
+      violations.push({
+        invariant: 'bounded-retries',
+        message: 'stopping.reserve.tokens must be >= 0 and less than budget.maxTokens',
+      });
+    }
+    if (reserve.wallClockMs < 0 || reserve.wallClockMs >= budget.maxWallClockMs) {
+      violations.push({
+        invariant: 'bounded-retries',
+        message: 'stopping.reserve.wallClockMs must be >= 0 and less than budget.maxWallClockMs',
       });
     }
   }

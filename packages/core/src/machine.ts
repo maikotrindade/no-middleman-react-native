@@ -46,11 +46,15 @@ export const loopMachine = setup({
   guards: {
     allHardGreen: ({ context }) => context.lastResult?.passed === true,
     budgetHit: ({ context }) => {
-      const { maxIterations, maxTokens, maxWallClockMs } = context.spec.stopping.budget;
+      const { budget, reserve } = context.spec.stopping;
+      // Iteration must stop with the reserve still unspent, so the escalation
+      // handoff (report + draft PR) always has headroom.
+      const tokenCap = budget.maxTokens - (reserve?.tokens ?? 0);
+      const wallCap = budget.maxWallClockMs - (reserve?.wallClockMs ?? 0);
       return (
-        context.iteration >= maxIterations ||
-        context.tokensSpent >= maxTokens ||
-        context.wallClockMs >= maxWallClockMs
+        context.iteration >= budget.maxIterations ||
+        context.tokensSpent >= tokenCap ||
+        context.wallClockMs >= wallCap
       );
     },
   },

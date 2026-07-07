@@ -36,6 +36,7 @@ export function makeSpec(): LoopSpec {
         lineage: '.nm/lineage.jsonl',
         adapter: 'file',
       },
+      context: { instructions: ['CLAUDE.md'], docs: [] },
       topology: 'maker-checker',
       operatingDomain: 'react-native',
     },

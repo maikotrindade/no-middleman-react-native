@@ -50,8 +50,11 @@ pnpm prove:oracle
 
 Every loop is a typed `LoopSpec` — trigger, intake (goal + scope globs),
 composite verification ordered cheap→expensive, external state (markdown
-working state + append-only JSONL lineage), topology, and a stopping rule
-with a hard budget (`maxIterations` + `maxTokens` + `maxWallClockMs`).
+working state + append-only JSONL lineage), the durable context it loads each
+run (`CLAUDE.md`/`SKILL.md`/docs), topology, and a stopping rule with a hard
+budget (`maxIterations` + `maxTokens` + `maxWallClockMs`) plus an optional
+escalation `reserve` — headroom the loop never spends on iteration so it can
+always package a clean handoff (final digest + draft PR).
 
 A spec that violates an invariant **does not run**:
 

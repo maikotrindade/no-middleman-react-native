@@ -51,6 +51,14 @@ export interface MemoryRef {
   adapter: 'file' | 'supabase';              // default 'file'
 }
 
+// ---- Taxonomy axis: Context (durable knowledge loaded each run) ----
+// Loop Contract field "Context": the fixed, declared knowledge every iteration
+// loads — kept explicit so context selection is deterministic, not accreted.
+export interface ContextRef {
+  instructions: string[];                    // CLAUDE.md / AGENTS.md / SKILL.md paths
+  docs: string[];                            // supplementary doc paths/globs
+}
+
 // ---- Taxonomy axis 5: Topology ----
 export type Topology = 'single-maker' | 'maker-checker' | 'explore-implement-verify';
 
@@ -58,6 +66,10 @@ export type Topology = 'single-maker' | 'maker-checker' | 'explore-implement-ver
 export interface StoppingRule {
   success: 'all-hard-verifiers-green';
   budget: { maxIterations: number; maxTokens: number; maxWallClockMs: number };
+  // Headroom carved out of the budget and never spent on iteration, so the
+  // loop can always package a clean handoff (final digest + draft PR) instead
+  // of dying mid-escalation once the budget is truly exhausted.
+  reserve?: { tokens: number; wallClockMs: number };
   onBudgetExceeded: 'open-draft-pr' | 'abort' | 'escalate';
 }
 
@@ -76,6 +88,7 @@ export interface LoopSpec {
     intake: Intake;
     verification: Verifier[];                // composite; ordered cheap -> expensive
     stateModel: MemoryRef;
+    context: ContextRef;                     // durable knowledge loaded each run
     topology: Topology;
     operatingDomain: 'react-native';
   };

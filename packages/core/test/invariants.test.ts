@@ -32,6 +32,7 @@ function validSpec(): LoopSpec {
         lineage: '.nm/lineage.jsonl',
         adapter: 'file',
       },
+      context: { instructions: ['CLAUDE.md'], docs: [] },
       topology: 'maker-checker',
       operatingDomain: 'react-native',
     },
@@ -80,6 +81,22 @@ describe('validateLoopSpec', () => {
   ] as const)('rejects non-positive or infinite budget.%s (bounded-retries)', (key, value) => {
     const spec = validSpec();
     spec.stopping.budget[key] = value;
+    expect(validateLoopSpec(spec).map((v) => v.invariant)).toContain('bounded-retries');
+  });
+
+  it('accepts a reserve smaller than the budget', () => {
+    const spec = validSpec();
+    spec.stopping.reserve = { tokens: 50_000, wallClockMs: 60_000 };
+    expect(validateLoopSpec(spec)).toEqual([]);
+  });
+
+  it.each([
+    ['tokens', { tokens: 1_000_000, wallClockMs: 60_000 }],
+    ['wallClockMs', { tokens: 50_000, wallClockMs: 3_600_000 }],
+    ['negative', { tokens: -1, wallClockMs: 60_000 }],
+  ] as const)('rejects a reserve that swallows the budget: %s (bounded-retries)', (_label, reserve) => {
+    const spec = validSpec();
+    spec.stopping.reserve = reserve;
     expect(validateLoopSpec(spec).map((v) => v.invariant)).toContain('bounded-retries');
   });
 
