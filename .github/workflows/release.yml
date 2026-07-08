@@ -1,0 +1,68 @@
+# Release CI/CD: on every push to main, publish no-middleman-rn to npm iff the
+# version in packages/cli/package.json is not already published (version-diff
+# guard). Bump the version → merge to main → this publishes, tags, and cuts a
+# GitHub Release. Same version → no-op. The unit/integration gate lives in ci.yml.
+name: release
+
+on:
+  push:
+    branches: [main]
+
+# contents: write → push the git tag + create the GitHub Release.
+# id-token:  write → npm provenance (OIDC-signed build attestation). Requires a
+#                    PUBLIC GitHub repo; drop NPM_CONFIG_PROVENANCE if private.
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org # writes ~/.npmrc reading NODE_AUTH_TOKEN
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+
+      # Publish only when the version is new to npm; export outputs for the release step.
+      - name: Publish to npm if version is new
+        id: publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+        run: |
+          NAME=$(node -p "require('./packages/cli/package.json').name")
+          VERSION=$(node -p "require('./packages/cli/package.json').version")
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION already published — skipping."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          else
+            pnpm --filter "$NAME" publish --access public --no-git-checks
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Tag the commit and cut a GitHub Release only when we actually published.
+      - name: Tag + GitHub Release
+        if: steps.publish.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.publish.outputs.version }}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" --title "$TAG" --generate-notes

@@ -1,0 +1,6 @@
+{
+  "name": "no-middleman",
+  "description": "Loop Engineering for React Native: fix-until-green and spec-to-green loops with a trustworthy composite verifier, adversarial checker, and execution lineage.",
+  "version": "0.0.1",
+  "author": { "name": "maikotrindade" }
+}
