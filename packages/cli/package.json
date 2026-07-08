@@ -1,5 +1,5 @@
 {
-  "name": "@no-middleman/cli",
+  "name": "no-middleman-rn",
   "version": "0.0.1",
   "description": "no-middleman CLI (alias nm): composite verifier runner for loop validation",
   "license": "MIT",
@@ -12,18 +12,18 @@
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "dependencies": {
+  "devDependencies": {
     "@no-middleman/core": "workspace:*",
     "@no-middleman/verifier-detox": "workspace:*",
-    "@no-middleman/verifiers": "workspace:*"
-  },
-  "devDependencies": {
+    "@no-middleman/verifiers": "workspace:*",
     "@types/node": "^20.17.0",
+    "tsup": "^8.0.0",
     "typescript": "^5.8.0",
-    "vitest": "^3.1.0"
+    "vitest": "^3.1.0",
+    "xstate": "^5.32.4"
   }
 }
