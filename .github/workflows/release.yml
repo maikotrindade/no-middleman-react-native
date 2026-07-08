@@ -23,7 +23,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: main # NPM_TOKEN lives in the "main" environment's secrets
+    environment: main
     steps:
       - uses: actions/checkout@v4
 
@@ -33,17 +33,21 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          registry-url: https://registry.npmjs.org # writes ~/.npmrc reading NODE_AUTH_TOKEN
+          registry-url: https://registry.npmjs.org
+
+      # npm trusted publishing (OIDC) requires npm CLI >= 11.5.1; Node 20 ships older.
+      - run: npm install -g npm@latest
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm test
 
       # Publish only when the version is new to npm; export outputs for the release step.
+      # No NPM_TOKEN: publishing auth comes from npm trusted publishing (OIDC via
+      # id-token: write above). Setting NODE_AUTH_TOKEN (even empty) blocks the OIDC flow.
       - name: Publish to npm if version is new
         id: publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
         run: |
           NAME=$(node -p "require('./packages/cli/package.json').name")
