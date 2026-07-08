@@ -2,6 +2,17 @@
 
 **Loop Engineering for React Native. You write the acceptance test; Claude Code writes the feature until it passes — no human in the middle.**
 
+[![CI](https://github.com/maikotrindade/no-middleman-react-native/actions/workflows/ci.yml/badge.svg)](https://github.com/maikotrindade/no-middleman-react-native/actions/workflows/ci.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![React Native](https://img.shields.io/badge/React_Native-61DAFB?logo=react&logoColor=black)](https://reactnative.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=white)](https://turbo.build/repo)
+[![XState](https://img.shields.io/badge/XState-2C3E50?logo=xstate&logoColor=white)](https://stately.ai/docs/xstate)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
+[![Detox](https://img.shields.io/badge/Detox-171717?logo=detox&logoColor=white)](https://wix.github.io/Detox)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/maikotrindade/no-middleman-react-native/pulls)
+
 Describe a feature. Approve the Detox flow that defines "done." Then step away. Claude Code builds it in your real RN app, looping on its own — edit, reload, run the suite, repeat — and only comes back to you with a pull request that a full E2E run already vouched for.
 
 The middleman it removes is *you*, standing in the loop's interior babysitting each assess-act-verify cycle. What it keeps is you at the two ends: you own the test going in, you review the diff coming out. Autonomous interior, human bookends.
