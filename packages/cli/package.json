@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "no-middleman CLI (alias nm): composite verifier runner for loop validation",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maikotrindade/no-middleman-react-native.git"
+  },
   "type": "module",
   "bin": {
     "no-middleman": "./dist/main.js",
