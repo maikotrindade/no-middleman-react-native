@@ -1,0 +1,29 @@
+{
+  "name": "@no-middleman/verifiers",
+  "version": "0.0.1",
+  "description": "Command-based typecheck/lint/unit/build verifiers and composite for No Middleman",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@no-middleman/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}

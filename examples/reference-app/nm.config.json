@@ -1,0 +1,7 @@
+{
+  "verifiers": ["typecheck", "lint", "unit"],
+  "e2e": {
+    "configuration": "android.emu.debug",
+    "avdName": "nm_test"
+  }
+}

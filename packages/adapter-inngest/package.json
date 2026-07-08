@@ -1,0 +1,23 @@
+{
+  "name": "@no-middleman/adapter-inngest",
+  "version": "0.0.1",
+  "description": "Opt-in durable-execution adapter for No Middleman loops: wraps loop hooks in step.run for Inngest-compatible engines",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@no-middleman/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}

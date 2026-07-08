@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git -c user.name=maikotrindade -c user.email=maikocharles@gmail.com commit -m \"fix: oracle hardening from live runs - zero-flow guard, AVD config, RN 0.76.9\" --quiet)"
+    ]
+  }
+}

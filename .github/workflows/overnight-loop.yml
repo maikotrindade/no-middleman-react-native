@@ -1,0 +1,61 @@
+# Emitted overnight loop (§7): real unattended runs live here, because /loop
+# is session-scoped and expires. Requires the ANTHROPIC_API_KEY secret.
+name: overnight-loop
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      goal:
+        description: Goal handed to /nm-fix
+        required: false
+        default: 'fix the failing verifier suite in examples/reference-app'
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120 # wall-clock budget: the workflow is the outer kill switch
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # Build-once/reload-many across CI runs (§6.1): the dev-client binary is
+      # keyed by the same native inputs nativeInputsHash uses.
+      - name: Restore Detox dev-client cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            examples/reference-app/android/app/build/outputs/apk
+            examples/reference-app/.nm/detox-build
+          key: detox-build-${{ hashFiles('examples/reference-app/package.json', 'examples/reference-app/app.json', 'examples/reference-app/android/**/*.gradle') }}
+
+      - name: Run the fix loop
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NM_REPORTER_URL: ${{ secrets.NM_REPORTER_URL }}
+        run: |
+          npx @anthropic-ai/claude-code \
+            -p "/nm-fix ${{ inputs.goal || 'fix the failing verifier suite in examples/reference-app' }}" \
+            --permission-mode acceptEdits \
+            --max-turns 200
+
+      # Lineage is the audit trail — always keep it, red or green.
+      - name: Upload lineage and working state
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nm-lineage
+          path: |
+            .nm/
+            examples/reference-app/.nm/
+          if-no-files-found: ignore

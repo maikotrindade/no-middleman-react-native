@@ -1,0 +1,30 @@
+{
+  "name": "@no-middleman/verifier-detox",
+  "version": "0.0.1",
+  "description": "Detox E2E oracle: build-once/reload-many, flake majority vote, emulator lifecycle",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@no-middleman/core": "workspace:*",
+    "@no-middleman/verifiers": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}

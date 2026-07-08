@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.turbo/
+*.log
+.nm/
+.claude/settings.local.json
+examples/reference-app/android/**/build/
+examples/reference-app/android/.gradle/
+examples/reference-app/android/local.properties
