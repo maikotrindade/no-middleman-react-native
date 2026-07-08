@@ -1,6 +1,6 @@
 {
   "name": "@no-middleman/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "LoopSpec types, invariants, runtime, and lineage journal for No Middleman",
   "license": "MIT",
   "type": "module",
